@@ -211,6 +211,29 @@ body {
 }
 .radar-blip { animation: tv-blip 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
 
+/* Empresas no radar acendem quando o feixe passa (mesmo período de .radar-sweep; o atraso vem do ângulo) */
+@keyframes tv-hit {
+  0% { opacity: 1; transform: scale(1.7); filter: drop-shadow(0 0 6px currentColor); }
+  18% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.55; transform: scale(1); }
+}
+.radar-hit {
+  color: #fff;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: tv-hit 4s linear infinite;
+}
+@keyframes tv-ping {
+  0% { opacity: 0.9; transform: scale(0.6); }
+  35% { opacity: 0; transform: scale(2.8); }
+  100% { opacity: 0; transform: scale(2.8); }
+}
+.radar-ping {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: tv-ping 4s ease-out infinite;
+}
+
 /* Faixa de sinais rolando */
 @keyframes tv-marquee { to { transform: translateX(-50%); } }
 .marquee { animation: tv-marquee 45s linear infinite; }
@@ -292,7 +315,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .lift, .lift:hover { transition: none; transform: none; }
   .reveal, .fill-anim, .live-dot, .orb, .orb-slow, .radar-sweep, .radar-blip, .marquee, .shine::after, .toast-in,
-  .tour-spot, .map-ripple, .draw-line {
+  .tour-spot, .map-ripple, .draw-line, .radar-hit, .radar-ping {
     animation: none !important;
   }
   .tilt { transform: none !important; transition: none; }
