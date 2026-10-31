@@ -6,26 +6,34 @@ import { cn } from "@/lib/utils";
 const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/** Anima números de 0 até o valor (aceita sufixo, ex.: "25%"). Texto sem número é exibido como está. */
+/**
+ * Anima o número até o valor (aceita prefixo e sufixo: "25%", "R$ 12,4 mi").
+ * Na primeira vez parte de 0; quando o valor muda, anima do valor anterior até o novo.
+ */
 export function CountUp({ value, duration = 1200 }: { value: string | number; duration?: number }) {
-  const match = String(value).match(/^(\d+(?:[.,]\d+)?)(.*)$/);
-  const target = match ? Number(match[1].replace(",", ".")) : 0;
-  const suffix = match ? match[2] : "";
-  const decimals = match?.[1].match(/[.,](\d+)/)?.[1].length ?? 0;
+  const match = String(value).match(/^(\D*?)(\d+(?:,\d+)?)(\D*)$/);
+  const prefix = match?.[1] ?? "";
+  const target = match ? Number(match[2].replace(",", ".")) : 0;
+  const suffix = match?.[3] ?? "";
+  const decimals = match?.[2].split(",")[1]?.length ?? 0;
   const [current, setCurrent] = useState(0);
+  const from = useRef(0);
 
   useEffect(() => {
     if (!match) return;
     if (prefersReducedMotion()) {
+      from.current = target;
       setCurrent(target);
       return;
     }
-    let frame = 0;
     const start = performance.now();
+    const origin = from.current;
+    let frame = 0;
     const tick = (now: number) => {
       const t = Math.min(1, (now - start) / duration);
-      setCurrent(target * (1 - Math.pow(1 - t, 3)));
+      setCurrent(origin + (target - origin) * (1 - Math.pow(1 - t, 3)));
       if (t < 1) frame = requestAnimationFrame(tick);
+      else from.current = target;
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
@@ -35,6 +43,7 @@ export function CountUp({ value, duration = 1200 }: { value: string | number; du
   if (!match) return <>{value}</>;
   return (
     <>
+      {prefix}
       {current.toLocaleString("pt-BR", { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}
       {suffix}
     </>

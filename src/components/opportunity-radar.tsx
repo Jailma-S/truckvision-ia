@@ -23,7 +23,7 @@ export function OpportunityRadar({
   const ticker = signals.slice(0, 12);
 
   return (
-    <section className="card-3d card-glow reveal relative overflow-hidden rounded-2xl">
+    <section data-tour="radar" className="card-3d card-glow reveal relative overflow-hidden rounded-2xl">
       <div aria-hidden className="orb pointer-events-none absolute -top-28 -left-20 h-72 w-72 rounded-full bg-primary/30 blur-3xl" />
       <div aria-hidden className="orb-slow pointer-events-none absolute -right-24 -bottom-32 h-72 w-72 rounded-full bg-secondary/20 blur-3xl" />
 

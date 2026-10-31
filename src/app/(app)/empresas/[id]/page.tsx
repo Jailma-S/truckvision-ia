@@ -53,7 +53,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ id: st
             {opportunity && <NeutralBadge>{STATUS_LABEL[opportunity.status]}</NeutralBadge>}
           </div>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div data-tour="briefing" className="flex flex-wrap gap-2">
           <GenerateAnalysisButton companyId={id} kind="justification" label="Por que essa empresa?" variant="secondary" />
           <GenerateAnalysisButton companyId={id} kind="briefing" label="Gerar briefing pré-visita" />
         </div>
@@ -61,7 +61,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ id: st
 
       <div className="grid gap-6 xl:grid-cols-3">
         <div className="space-y-6 xl:col-span-2">
-          <Card className="card-glow relative overflow-hidden">
+          <Card data-tour="iac" className="card-glow relative overflow-hidden">
             <div aria-hidden className="pointer-events-none absolute -top-20 -right-16 h-56 w-56 rounded-full bg-primary/30 blur-3xl" />
             <div className="relative mb-5 flex flex-wrap items-end justify-between gap-4">
               <div>

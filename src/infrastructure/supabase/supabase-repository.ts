@@ -90,6 +90,13 @@ export class SupabaseRepository implements TruckVisionRepository {
     return check(await this.db.from("market_signals").insert(input).select().single()) as Signal;
   }
 
+  async deleteSimulatedSignals() {
+    const rows = check(
+      await this.db.from("market_signals").delete().eq("created_by", "simulation").select("company_id"),
+    ) as { company_id: string }[];
+    return [...new Set(rows.map((r) => r.company_id))];
+  }
+
   async listOpportunities() {
     return check(
       await this.db.from("opportunities").select("*, company:companies(*)").order("iac_score", { ascending: false }),

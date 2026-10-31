@@ -7,6 +7,11 @@ import { chatUseCase, type ChatTurn } from "@/application/use-cases/chat";
 import { createLeadUseCase } from "@/application/use-cases/create-lead";
 import { generateAnalysisUseCase, type AnalysisKind } from "@/application/use-cases/generate-analysis";
 import { registerSignalUseCase } from "@/application/use-cases/register-signal";
+import {
+  resetSimulationUseCase,
+  simulateSignalUseCase,
+  type SimulationResult,
+} from "@/application/use-cases/simulate-signal";
 import { OPPORTUNITY_STATUSES, SIGNAL_TYPES, type OpportunityStatus, type SignalType } from "@/domain/entities";
 import { ZodError } from "zod";
 
@@ -91,6 +96,26 @@ export async function addInteractionAction(_: FormState, fd: FormData): Promise<
   });
   revalidatePath(`/empresas/${companyId}`);
   return { ok: "Interação registrada." };
+}
+
+export async function simulateSignalAction(): Promise<{ result?: SimulationResult; error?: string }> {
+  try {
+    const result = await simulateSignalUseCase(await getRepository());
+    revalidatePath("/", "layout");
+    return { result };
+  } catch (err) {
+    return { error: errorMessage(err) };
+  }
+}
+
+export async function resetSimulationAction(): Promise<FormState> {
+  try {
+    const count = await resetSimulationUseCase(await getRepository());
+    revalidatePath("/", "layout");
+    return { ok: count ? `Demo restaurada (${count} empresa(s) recalculada(s)).` : "Nada para restaurar." };
+  } catch (err) {
+    return { error: errorMessage(err) };
+  }
 }
 
 export async function chatAction(history: ChatTurn[], question: string) {

@@ -233,6 +233,13 @@ body {
   pointer-events: none;
 }
 
+/* Notificação deslizando da direita */
+@keyframes tv-toast {
+  from { opacity: 0; transform: translateX(40px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+.toast-in { animation: tv-toast 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+
 /* Inclinação 3D com holofote que segue o mouse (componente Tilt) */
 .tilt {
   transform-style: preserve-3d;
@@ -252,7 +259,8 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .lift, .lift:hover { transition: none; transform: none; }
-  .reveal, .fill-anim, .live-dot, .orb, .orb-slow, .radar-sweep, .radar-blip, .marquee, .shine::after {
+  .reveal, .fill-anim, .live-dot, .orb, .orb-slow, .radar-sweep, .radar-blip, .marquee, .shine::after, .toast-in,
+  .tour-spot {
     animation: none !important;
   }
   .tilt { transform: none !important; transition: none; }

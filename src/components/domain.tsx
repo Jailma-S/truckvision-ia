@@ -118,6 +118,9 @@ export function SignalTimeline({ signals, showCompany = true }: { signals: Signa
             {s.created_by === "agent" && (
               <Badge className="border-violet-400/30 bg-violet-400/10 text-violet-300">Agente IA</Badge>
             )}
+            {s.created_by === "simulation" && (
+              <Badge className="border-amber-400/30 bg-amber-400/10 text-amber-200">Simulação</Badge>
+            )}
           </div>
           <p className="mt-1.5 text-sm font-medium text-white">
             {s.url ? (

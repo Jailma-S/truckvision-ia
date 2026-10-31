@@ -37,7 +37,8 @@ export interface NewSignal {
   evidence: string[] | null;
   relevance: Relevance;
   relevance_score: number;
-  created_by: "manual" | "agent";
+  /** "simulation": criado pelo botão de demonstração e removido por "Restaurar demo" */
+  created_by: "manual" | "agent" | "simulation";
 }
 
 export interface OpportunityUpsert {
@@ -70,6 +71,8 @@ export interface TruckVisionRepository {
   listSignals(opts?: { companyId?: string; sinceDays?: number; limit?: number }): Promise<SignalWithRefs[]>;
   signalExists(companyId: string, url: string): Promise<boolean>;
   createSignal(input: NewSignal): Promise<Signal>;
+  /** Remove os sinais de simulação e devolve os ids das empresas afetadas. */
+  deleteSimulatedSignals(): Promise<string[]>;
 
   listOpportunities(): Promise<OpportunityWithCompany[]>;
   getOpenOpportunity(companyId: string): Promise<Opportunity | null>;

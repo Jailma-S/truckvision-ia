@@ -16,7 +16,7 @@ export default async function OpportunitiesPage() {
         description="Ordenadas por IAC. Mova a oportunidade de etapa conforme o avanço da abordagem."
       />
       <div className="-mx-4 overflow-x-auto px-4 pb-4">
-        <div className="grid min-w-[1100px] grid-cols-5 gap-4">
+        <div data-tour="kanban" className="grid min-w-[1100px] grid-cols-5 gap-4">
           {OPPORTUNITY_STATUSES.map((status, col) => {
             const items = opportunities.filter((o) => o.status === status);
             return (

@@ -140,6 +140,13 @@ export class DemoRepository implements TruckVisionRepository {
     return signal;
   }
 
+  async deleteSimulatedSignals() {
+    const s = store();
+    const affected = s.signals.filter((x) => x.created_by === "simulation").map((x) => x.company_id!);
+    s.signals = s.signals.filter((x) => x.created_by !== "simulation");
+    return [...new Set(affected)];
+  }
+
   async listOpportunities() {
     const { opportunities, companies } = store();
     return opportunities

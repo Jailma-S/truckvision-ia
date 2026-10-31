@@ -3,23 +3,33 @@ import Link from "next/link";
 import { getRepository } from "@/application/container";
 import { getDashboardUseCase } from "@/application/use-cases/dashboard";
 import { IacScore, KpiCard, PriorityBadge, SignalTimeline } from "@/components/domain";
+import { ImpactPanel } from "@/components/impact-panel";
 import { OpportunityRadar } from "@/components/opportunity-radar";
+import { SimulateSignal } from "@/features/simulate";
+import { TourButton } from "@/features/tour";
 import { Card, CardTitle, EmptyState, PageHeader } from "@/components/ui";
 import { STATUS_LABEL } from "@/domain/entities";
 import { cn } from "@/lib/utils";
 
 export default async function DashboardPage() {
-  const { kpis, active, ranking, recentSignals, funnel } = await getDashboardUseCase(await getRepository());
+  const { kpis, impact, active, ranking, recentSignals, funnel } = await getDashboardUseCase(await getRepository());
   const maxFunnel = Math.max(1, ...funnel.map((f) => f.count));
   const delay = (i: number) => ({ ["--i" as string]: i });
 
   return (
     <>
       <div className="reveal">
-        <PageHeader title="Dashboard Executivo" description="Enxergue hoje as oportunidades de amanhã." />
+        <PageHeader title="Dashboard Executivo" description="Enxergue hoje as oportunidades de amanhã.">
+          <div className="flex flex-wrap items-center gap-2">
+            <TourButton companyId={ranking[0]?.company_id ?? null} />
+            <SimulateSignal />
+          </div>
+        </PageHeader>
       </div>
 
       <OpportunityRadar opportunities={active} signals={recentSignals} signalsLast30={kpis.signalsLast30} />
+
+      <ImpactPanel impact={impact} />
 
       <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
         <KpiCard index={1} icon={Building2} label="Empresas monitoradas" value={kpis.companies} />
@@ -38,7 +48,7 @@ export default async function DashboardPage() {
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-3">
-        <Card className="reveal relative overflow-hidden xl:col-span-2" style={delay(7)}>
+        <Card data-tour="ranking" className="reveal relative overflow-hidden xl:col-span-2" style={delay(7)}>
           <div aria-hidden className="pointer-events-none absolute -top-24 left-1/3 h-48 w-96 rounded-full bg-primary/15 blur-3xl" />
           <div className="relative mb-4 flex items-center justify-between">
             <CardTitle>Ranking comercial (IAC)</CardTitle>
@@ -116,7 +126,11 @@ export default async function DashboardPage() {
             Inteligência de Mercado
           </Link>
         </div>
-        {recentSignals.length ? <SignalTimeline signals={recentSignals} /> : <EmptyState>Nenhum sinal registrado.</EmptyState>}
+        {recentSignals.length ? (
+          <SignalTimeline signals={recentSignals.slice(0, 6)} />
+        ) : (
+          <EmptyState>Nenhum sinal registrado.</EmptyState>
+        )}
       </Card>
     </>
   );
