@@ -1,4 +1,4 @@
-import { Building2, CheckCircle2, Gauge, Radar, Target, TrendingUp } from "lucide-react";
+import { Building2, CheckCircle2, Gauge, Radar, Target, TrendingUp, Tv } from "lucide-react";
 import Link from "next/link";
 import { getRepository } from "@/application/container";
 import { getDashboardUseCase } from "@/application/use-cases/dashboard";
@@ -22,6 +22,12 @@ export default async function DashboardPage() {
         <PageHeader title="Dashboard Executivo" description="Enxergue hoje as oportunidades de amanhã.">
           <div className="flex flex-wrap items-center gap-2">
             <TourButton companyId={ranking[0]?.company_id ?? null} />
+            <Link
+              href="/tv"
+              className="inline-flex h-9 items-center gap-2 rounded-lg border border-border bg-surface-2/70 px-4 text-sm font-medium text-foreground shadow-[inset_0_1px_0_rgb(255_255_255/0.08)] hover:border-accent/30"
+            >
+              <Tv className="h-4 w-4" /> Modo TV
+            </Link>
             <SimulateSignal />
           </div>
         </PageHeader>

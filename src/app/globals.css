@@ -258,6 +258,13 @@ body {
   animation: tv-ripple 2.4s ease-out infinite;
 }
 
+/* Barra de progresso do Modo TV */
+@keyframes tv-progress-fill {
+  from { width: 0; }
+  to { width: 100%; }
+}
+.tv-progress { animation: tv-progress-fill linear forwards; }
+
 /* Notificação deslizando da direita */
 @keyframes tv-toast {
   from { opacity: 0; transform: translateX(40px) scale(0.96); }

@@ -5,6 +5,7 @@ import {
   Bot,
   Building2,
   CalendarCheck,
+  CalendarRange,
   KanbanSquare,
   LayoutDashboard,
   MapPinned,
@@ -13,6 +14,7 @@ import {
   Radar,
   TrendingUp,
   Truck,
+  Tv,
   X,
 } from "lucide-react";
 import Link from "next/link";
@@ -28,7 +30,9 @@ const NAV = [
       { href: "/", label: "Dashboard", icon: LayoutDashboard },
       { href: "/meu-dia", label: "Meu Dia", icon: CalendarCheck },
       { href: "/mapa", label: "Mapa Territorial", icon: MapPinned },
+      { href: "/janela-de-compra", label: "Janela de Compra", icon: CalendarRange },
       { href: "/resultados", label: "Resultados & ROI", icon: TrendingUp },
+      { href: "/tv", label: "Modo TV", icon: Tv },
     ],
   },
   {

@@ -49,6 +49,12 @@ function buildSteps(companyId: string | null): Step[] {
       text: "O mapa mostra cada município pulsando conforme o volume de oportunidades. Clique em uma cidade para ver as empresas — é a base para distribuir os territórios entre os vendedores.",
     },
     {
+      path: "/janela-de-compra",
+      target: "window",
+      title: "Quando agir",
+      text: "A Janela de Compra estima quando cada empresa vai precisar dos caminhões e ilumina o momento ideal de abordagem. A linha azul é hoje: quem está em verde precisa de contato agora.",
+    },
+    {
       path: "/",
       target: "ranking",
       title: "Onde focar primeiro",
