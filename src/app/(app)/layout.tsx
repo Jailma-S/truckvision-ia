@@ -26,7 +26,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <div className="orb-slow absolute top-[40%] right-[-8%] h-[24rem] w-[24rem] rounded-full bg-secondary/10 blur-[110px]" />
       </div>
       <Sidebar mode={isSupabaseConfigured() ? "supabase" : "demo"} userEmail={userEmail} alertIds={alertIds} />
-      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</main>
+      {/* min-w-0: conteúdos largos (quadro, tabelas) rolam dentro do main em vez de alargá-lo */}
+      <main className="mx-auto w-full max-w-7xl min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</main>
       <TourOverlay />
     </div>
   );

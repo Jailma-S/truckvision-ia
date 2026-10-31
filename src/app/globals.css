@@ -288,6 +288,13 @@ body {
 }
 .tv-progress { animation: tv-progress-fill linear forwards; }
 
+/* Confete ao validar uma oportunidade */
+@keyframes tv-confetti {
+  0% { opacity: 1; transform: translate(0, 0) rotate(0); }
+  100% { opacity: 0; transform: translate(var(--dx), calc(var(--dy) + 120px)) rotate(var(--r)); }
+}
+.confetti { animation: tv-confetti 1.4s cubic-bezier(0.2, 0.7, 0.3, 1) forwards; }
+
 /* Notificação deslizando da direita */
 @keyframes tv-toast {
   from { opacity: 0; transform: translateX(40px) scale(0.96); }
@@ -315,7 +322,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .lift, .lift:hover { transition: none; transform: none; }
   .reveal, .fill-anim, .live-dot, .orb, .orb-slow, .radar-sweep, .radar-blip, .marquee, .shine::after, .toast-in,
-  .tour-spot, .map-ripple, .draw-line, .radar-hit, .radar-ping {
+  .tour-spot, .map-ripple, .draw-line, .radar-hit, .radar-ping, .confetti {
     animation: none !important;
   }
   .tilt { transform: none !important; transition: none; }

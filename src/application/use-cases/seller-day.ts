@@ -21,7 +21,7 @@ export interface SellerAction {
 }
 
 /** Próximo passo recomendado por etapa do funil. */
-const NEXT_STEP: Record<Exclude<OpportunityStatus, "closed">, string> = {
+export const NEXT_STEP: Record<Exclude<OpportunityStatus, "closed">, string> = {
   identified: "Validar o sinal e qualificar a empresa",
   investigating: "Fazer o primeiro contato com o decisor da frota",
   contacted: "Agendar visita levando o briefing pré-visita",
