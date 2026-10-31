@@ -1,45 +1,102 @@
 "use client";
 
-import { Building2, KanbanSquare, LayoutDashboard, MapPinned, Menu, MessageSquare, Radar, Truck, X } from "lucide-react";
+import {
+  Bell,
+  Bot,
+  Building2,
+  CalendarCheck,
+  KanbanSquare,
+  LayoutDashboard,
+  MapPinned,
+  Menu,
+  MessageSquare,
+  Radar,
+  TrendingUp,
+  Truck,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useUnseenCount } from "@/features/alerts";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/mapa", label: "Mapa Territorial", icon: MapPinned },
-  { href: "/oportunidades", label: "Oportunidades", icon: KanbanSquare },
-  { href: "/empresas", label: "Empresas", icon: Building2 },
-  { href: "/sinais", label: "Inteligência de Mercado", icon: Radar },
-  { href: "/chat", label: "Chat IA", icon: MessageSquare },
+  {
+    section: "Visão",
+    items: [
+      { href: "/", label: "Dashboard", icon: LayoutDashboard },
+      { href: "/meu-dia", label: "Meu Dia", icon: CalendarCheck },
+      { href: "/mapa", label: "Mapa Territorial", icon: MapPinned },
+      { href: "/resultados", label: "Resultados & ROI", icon: TrendingUp },
+    ],
+  },
+  {
+    section: "Comercial",
+    items: [
+      { href: "/oportunidades", label: "Oportunidades", icon: KanbanSquare },
+      { href: "/empresas", label: "Empresas", icon: Building2 },
+      { href: "/alertas", label: "Alertas", icon: Bell, badge: true },
+    ],
+  },
+  {
+    section: "Inteligência",
+    items: [
+      { href: "/sinais", label: "Inteligência de Mercado", icon: Radar },
+      { href: "/agente", label: "Agente de IA", icon: Bot },
+      { href: "/chat", label: "Chat IA", icon: MessageSquare },
+    ],
+  },
 ];
 
-export function Sidebar({ mode, userEmail }: { mode: "demo" | "supabase"; userEmail?: string | null }) {
+export function Sidebar({
+  mode,
+  userEmail,
+  alertIds = [],
+}: {
+  mode: "demo" | "supabase";
+  userEmail?: string | null;
+  alertIds?: string[];
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const unseen = useUnseenCount(alertIds);
 
   const nav = (
-    <nav className="flex flex-col gap-1">
-      {NAV.map(({ href, label, icon: Icon }) => {
-        const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
-        return (
-          <Link
-            key={href}
-            href={href}
-            onClick={() => setOpen(false)}
-            className={cn(
-              "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all",
-              active
-                ? "btn-3d text-white"
-                : "text-slate-400 hover:bg-white/[0.04] hover:text-white",
-            )}
-          >
-            <Icon className={cn("h-4 w-4", active ? "text-white" : "text-slate-500")} aria-hidden />
-            {label}
-          </Link>
-        );
-      })}
+    <nav className="flex flex-col gap-5">
+      {NAV.map((group) => (
+        <div key={group.section}>
+          <p className="mb-1.5 px-3 text-[10px] font-semibold tracking-[0.18em] text-slate-500 uppercase">{group.section}</p>
+          <div className="flex flex-col gap-0.5">
+            {group.items.map(({ href, label, icon: Icon, ...rest }) => {
+              const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
+              const count = "badge" in rest ? unseen : 0;
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    "relative flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all",
+                    active ? "btn-3d text-white" : "text-slate-400 hover:bg-white/[0.04] hover:text-white",
+                  )}
+                >
+                  <Icon className={cn("h-4 w-4", active ? "text-white" : "text-slate-500")} aria-hidden />
+                  <span className="flex-1">{label}</span>
+                  {count > 0 && (
+                    <span
+                      className="live-dot rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] leading-none font-bold text-white tabular-nums"
+                      aria-label={`${count} alertas não lidos`}
+                    >
+                      {count}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      ))}
     </nav>
   );
 
@@ -81,18 +138,28 @@ export function Sidebar({ mode, userEmail }: { mode: "demo" | "supabase"; userEm
       {/* mobile */}
       <header className={cn("sticky top-0 z-30 flex items-center justify-between px-4 py-3 lg:hidden", surface)}>
         {brand}
-        <button onClick={() => setOpen(!open)} aria-label={open ? "Fechar menu" : "Abrir menu"} className="text-white">
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex items-center gap-4">
+          <Link href="/alertas" className="relative text-white" aria-label={`Alertas${unseen ? `: ${unseen} não lidos` : ""}`}>
+            <Bell className="h-5 w-5" />
+            {unseen > 0 && (
+              <span className="live-dot absolute -top-1.5 -right-2 rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                {unseen}
+              </span>
+            )}
+          </Link>
+          <button onClick={() => setOpen(!open)} aria-label={open ? "Fechar menu" : "Abrir menu"} className="text-white">
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </header>
       {open && (
-        <div className={cn("fixed inset-0 top-16 z-20 flex flex-col gap-6 p-4 lg:hidden", surface)}>
+        <div className={cn("fixed inset-0 top-16 z-20 flex flex-col gap-6 overflow-y-auto p-4 lg:hidden", surface)}>
           {nav}
           {footer}
         </div>
       )}
       {/* desktop */}
-      <aside className={cn("sticky top-0 hidden h-screen w-64 shrink-0 flex-col gap-8 p-5 lg:flex", surface)}>
+      <aside className={cn("sticky top-0 hidden h-screen w-64 shrink-0 flex-col gap-7 overflow-y-auto p-5 lg:flex", surface)}>
         {/* luz de topo atrás da marca */}
         <div aria-hidden className="pointer-events-none absolute top-0 left-0 h-40 w-full bg-[radial-gradient(60%_80%_at_30%_0%,rgb(0_87_255/0.35),transparent)]" />
         <div className="relative">{brand}</div>

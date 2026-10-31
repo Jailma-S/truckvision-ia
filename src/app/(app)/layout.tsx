@@ -1,3 +1,5 @@
+import { getRepository } from "@/application/container";
+import { getAlertsUseCase } from "@/application/use-cases/alerts";
 import { Sidebar } from "@/components/sidebar";
 import { TourOverlay } from "@/features/tour";
 import {
@@ -14,6 +16,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     const supabase = await createSupabaseServerClient();
     userEmail = (await supabase.auth.getUser()).data.user?.email ?? null;
   }
+  // ids dos alertas atuais: o contador do menu compara com os já vistos neste navegador
+  const alertIds = (await getAlertsUseCase(await getRepository()).catch(() => [])).map((a) => a.id);
   return (
     <div className="relative min-h-screen lg:flex">
       {/* luzes de fundo em movimento lento */}
@@ -21,7 +25,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <div className="orb absolute top-[-10%] left-[20%] h-[28rem] w-[28rem] rounded-full bg-primary/15 blur-[110px]" />
         <div className="orb-slow absolute top-[40%] right-[-8%] h-[24rem] w-[24rem] rounded-full bg-secondary/10 blur-[110px]" />
       </div>
-      <Sidebar mode={isSupabaseConfigured() ? "supabase" : "demo"} userEmail={userEmail} />
+      <Sidebar mode={isSupabaseConfigured() ? "supabase" : "demo"} userEmail={userEmail} alertIds={alertIds} />
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</main>
       <TourOverlay />
     </div>

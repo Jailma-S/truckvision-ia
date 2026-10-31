@@ -233,6 +233,20 @@ body {
   pointer-events: none;
 }
 
+/* Barras verticais crescendo a partir da base */
+@keyframes tv-grow {
+  from { transform: scaleY(0); }
+}
+/* Linha sendo desenhada */
+@keyframes tv-draw {
+  from { stroke-dashoffset: 2000; }
+  to { stroke-dashoffset: 0; }
+}
+.draw-line {
+  stroke-dasharray: 2000;
+  animation: tv-draw 1.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s backwards;
+}
+
 /* Onda que se expande a partir das cidades no mapa */
 @keyframes tv-ripple {
   0% { transform: scale(1); opacity: 0.85; }
@@ -271,7 +285,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .lift, .lift:hover { transition: none; transform: none; }
   .reveal, .fill-anim, .live-dot, .orb, .orb-slow, .radar-sweep, .radar-blip, .marquee, .shine::after, .toast-in,
-  .tour-spot, .map-ripple {
+  .tour-spot, .map-ripple, .draw-line {
     animation: none !important;
   }
   .tilt { transform: none !important; transition: none; }
