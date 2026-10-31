@@ -28,10 +28,13 @@ export async function getDashboardUseCase(repo: TruckVisionRepository) {
     const t = new Date(s.signal_date ?? s.created_at).getTime();
     firstSignal.set(s.company_id, Math.min(firstSignal.get(s.company_id) ?? t, t));
   }
-  const leadDays = active
-    .map((o) => firstSignal.get(o.company_id))
-    .filter((t): t is number => t !== undefined)
-    .map((t) => (Date.now() - t) / DAY);
+  // antecipação = dias desde o primeiro sinal detectado, por oportunidade ativa
+  const leads = active
+    .map((o) => ({ o, t: firstSignal.get(o.company_id) }))
+    .filter((x): x is { o: (typeof active)[number]; t: number } => x.t !== undefined)
+    .map(({ o, t }) => ({ company: o.company.company_name, days: Math.round((Date.now() - t) / DAY) }))
+    .sort((a, b) => b.days - a.days);
+  const leadDays = leads.map((l) => l.days);
 
   return {
     kpis: {
@@ -54,6 +57,13 @@ export async function getDashboardUseCase(repo: TruckVisionRepository) {
         status,
         value: values.filter((v) => v.o.status === status).reduce((sum, v) => sum + v.potential, 0),
       })),
+    },
+    lead: {
+      avgDays: leadDays.length ? Math.round(leadDays.reduce((a, b) => a + b, 0) / leadDays.length) : 0,
+      maxDays: leads[0]?.days ?? 0,
+      maxCompany: leads[0]?.company ?? null,
+      minDays: leads[leads.length - 1]?.days ?? 0,
+      companies: leads.length,
     },
     active,
     ranking: active.slice(0, 8),

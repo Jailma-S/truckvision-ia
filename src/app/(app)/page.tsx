@@ -4,6 +4,7 @@ import { getRepository } from "@/application/container";
 import { getDashboardUseCase } from "@/application/use-cases/dashboard";
 import { IacScore, KpiCard, PriorityBadge, SignalTimeline } from "@/components/domain";
 import { ImpactPanel } from "@/components/impact-panel";
+import { LeadTimeHero } from "@/components/lead-time-hero";
 import { OpportunityRadar } from "@/components/opportunity-radar";
 import { SimulateSignal } from "@/features/simulate";
 import { TourButton } from "@/features/tour";
@@ -12,7 +13,7 @@ import { STATUS_LABEL } from "@/domain/entities";
 import { cn } from "@/lib/utils";
 
 export default async function DashboardPage() {
-  const { kpis, impact, active, ranking, recentSignals, funnel } = await getDashboardUseCase(await getRepository());
+  const { kpis, impact, lead, active, ranking, recentSignals, funnel } = await getDashboardUseCase(await getRepository());
   const maxFunnel = Math.max(1, ...funnel.map((f) => f.count));
   const delay = (i: number) => ({ ["--i" as string]: i });
 
@@ -34,6 +35,8 @@ export default async function DashboardPage() {
       </div>
 
       <OpportunityRadar opportunities={active} signals={recentSignals} signalsLast30={kpis.signalsLast30} />
+
+      <LeadTimeHero lead={lead} />
 
       <ImpactPanel impact={impact} />
 

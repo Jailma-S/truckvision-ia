@@ -7,6 +7,7 @@ import { getTerritoryUseCase } from "@/application/use-cases/territory";
 import { BarChart, LineChart } from "@/components/charts";
 import { KpiCard } from "@/components/domain";
 import { ImpactPanel } from "@/components/impact-panel";
+import { LeadTimeHero } from "@/components/lead-time-hero";
 import { OpportunityRadar } from "@/components/opportunity-radar";
 import { Card, CardTitle } from "@/components/ui";
 import { PurchaseTimeline } from "@/features/purchase-timeline";
@@ -44,6 +45,18 @@ export default async function TvPage() {
             <KpiCard index={6} icon={CheckCircle2} label="Validadas" value={kpis.validated} />
           </div>
         </>
+      ),
+    },
+    {
+      title: "Dias à frente da concorrência",
+      subtitle: "Antecipação média entre o sinal detectado e o pedido formal",
+      content: (
+        // centralizado na vertical para ocupar o telão
+        <div className="flex min-h-[70vh] items-center">
+          <div className="w-full">
+            <LeadTimeHero lead={dash.lead} index={0} />
+          </div>
+        </div>
       ),
     },
     {

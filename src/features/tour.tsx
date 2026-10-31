@@ -32,6 +32,12 @@ function buildSteps(companyId: string | null): Step[] {
     },
     {
       path: "/",
+      target: "lead",
+      title: "Dias à frente da concorrência",
+      text: "Este é o número que muda o jogo: em média, a equipe sabe da oportunidade com semanas de antecedência — antes do pedido formal e antes de qualquer concorrente bater na porta do cliente.",
+    },
+    {
+      path: "/",
       target: "impact",
       title: "Quanto isso vale",
       text: "Cada oportunidade vira valor: pipeline potencial, receita ponderada pela etapa do funil e quantos dias antes do pedido formal a equipe ficou sabendo. Nesta demonstração os valores são fictícios.",

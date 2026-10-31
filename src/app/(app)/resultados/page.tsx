@@ -35,7 +35,7 @@ export default function ResultsPage() {
         <KpiCard index={2} icon={TrendingUp} label="ROI do projeto" value={`${totals.roi}%`} hint={totals.payback ? `retorno a partir de ${totals.payback}` : "ainda sem retorno"} highlight />
         <KpiCard index={3} icon={Truck} label="Caminhões vendidos" value={totals.trucks} hint="atribuídos ao radar" />
         <KpiCard index={4} icon={Clock} label="Horas economizadas" value={totals.hoursSaved} hint="prospecção manual evitada" />
-        <KpiCard index={5} icon={CalendarClock} label="Antecipação" value={`${totals.leadDays} dias`} hint="antes do pedido formal" />
+        <KpiCard index={5} icon={CalendarClock} label="Antecipação média" value={`${totals.leadDays} dias`} hint="antes do pedido formal" highlight />
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-2">
