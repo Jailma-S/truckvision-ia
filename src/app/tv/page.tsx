@@ -1,7 +1,9 @@
 import { Building2, CheckCircle2, CircleDollarSign, Clock, Gauge, Radar, Target, TrendingUp, Truck } from "lucide-react";
 import type { Metadata } from "next";
 import { getRepository } from "@/application/container";
+import { AFTERMARKET_ASSUMPTIONS, getAftermarketUseCase } from "@/application/use-cases/aftermarket";
 import { getDashboardUseCase } from "@/application/use-cases/dashboard";
+import { AftermarketHero } from "@/components/aftermarket-hero";
 import { getPurchaseWindowsUseCase } from "@/application/use-cases/purchase-window";
 import { getTerritoryUseCase } from "@/application/use-cases/territory";
 import { BarChart, LineChart } from "@/components/charts";
@@ -27,6 +29,7 @@ export default async function TvPage() {
     getPurchaseWindowsUseCase(repo),
   ]);
   const results = getDemoResults();
+  const after = await getAftermarketUseCase(repo);
   const { kpis } = dash;
 
   const slides = [
@@ -81,6 +84,26 @@ export default async function TvPage() {
             <KpiCard index={4} icon={CircleDollarSign} label="Pipeline na janela" value={formatBRLCompact(windows.summary.pipelineNow)} />
           </div>
           <PurchaseTimeline windows={windows.windows} today={windows.today} />
+        </>
+      ),
+    },
+    {
+      title: "Vision Aftermarket",
+      subtitle: "Receita de pós-venda na frota dos clientes (valores fictícios)",
+      content: (
+        <>
+          <AftermarketHero
+            saleMargin={after.perTruck.saleMargin}
+            afterMargin={after.perTruck.afterMargin}
+            multiple={after.perTruck.multiple}
+            years={AFTERMARKET_ASSUMPTIONS.years}
+          />
+          <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <KpiCard index={2} icon={Truck} label="Caminhões na base" value={after.totals.fleet} />
+            <KpiCard index={3} icon={CircleDollarSign} label="Receita recorrente / ano" value={formatBRLCompact(after.totals.annualRevenue)} highlight />
+            <KpiCard index={4} icon={CircleDollarSign} label="Margem recorrente / ano" value={formatBRLCompact(after.totals.annualMargin)} highlight />
+            <KpiCard index={5} icon={Target} label="Vendidos sem contrato" value={after.totals.uncoveredSold} />
+          </div>
         </>
       ),
     },

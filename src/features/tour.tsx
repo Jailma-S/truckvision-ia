@@ -79,6 +79,12 @@ function buildSteps(companyId: string | null): Step[] {
       text: "Com um clique, a IA gera a justificativa e o briefing pré-visita: resumo, evidências, possíveis dores do cliente e perguntas para a reunião.",
     },
     {
+      path: "/aftermarket",
+      target: "aftermarket",
+      title: "Receita depois da venda",
+      text: "Cada caminhão vendido abre uma receita recorrente de manutenção, peças e revisões — com margem bem maior que a do equipamento. O sistema indica a oferta certa para cada frota.",
+    },
+    {
       path: "/oportunidades",
       target: "kanban",
       title: "Ação comercial acompanhada",

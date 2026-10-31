@@ -15,6 +15,7 @@ import {
   TrendingUp,
   Truck,
   Tv,
+  Wrench,
   X,
 } from "lucide-react";
 import Link from "next/link";
@@ -40,6 +41,7 @@ const NAV = [
     items: [
       { href: "/oportunidades", label: "Oportunidades", icon: KanbanSquare },
       { href: "/empresas", label: "Empresas", icon: Building2 },
+      { href: "/aftermarket", label: "Aftermarket", icon: Wrench },
       { href: "/alertas", label: "Alertas", icon: Bell, badge: true },
     ],
   },
