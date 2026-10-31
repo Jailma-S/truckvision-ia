@@ -47,13 +47,13 @@ export default function LoginPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-sm p-6">
-        <div className="mb-6 flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
+      <Card className="card-glow w-full max-w-sm p-7">
+        <div className="mb-7 flex items-center gap-3">
+          <span className="tile-3d flex h-11 w-11 items-center justify-center rounded-xl">
             <Truck className="h-5 w-5 text-white" />
           </span>
           <div>
-            <h1 className="font-semibold">TruckVision IA</h1>
+            <h1 className="font-semibold text-white">TruckVision IA</h1>
             <p className="text-xs text-muted">Enxergue hoje as oportunidades de amanhã</p>
           </div>
         </div>
@@ -68,7 +68,7 @@ export default function LoginPage() {
             <Button className="w-full" disabled={status === "sending"}>
               {status === "sending" ? "Enviando…" : "Receber link de acesso"}
             </Button>
-            {status === "error" && <p className="text-sm text-danger">{error}</p>}
+            {status === "error" && <p className="text-sm text-red-400">{error}</p>}
           </form>
         )}
       </Card>

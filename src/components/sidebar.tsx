@@ -28,11 +28,13 @@ export function Sidebar({ mode, userEmail }: { mode: "demo" | "supabase"; userEm
             href={href}
             onClick={() => setOpen(false)}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-              active ? "bg-primary text-white" : "text-slate-300 hover:bg-white/10 hover:text-white",
+              "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all",
+              active
+                ? "btn-3d text-white"
+                : "text-slate-400 hover:bg-white/[0.04] hover:text-white",
             )}
           >
-            <Icon className="h-4 w-4" aria-hidden />
+            <Icon className={cn("h-4 w-4", active ? "text-white" : "text-slate-500")} aria-hidden />
             {label}
           </Link>
         );
@@ -41,21 +43,21 @@ export function Sidebar({ mode, userEmail }: { mode: "demo" | "supabase"; userEm
   );
 
   const brand = (
-    <div className="flex items-center gap-2">
-      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-        <Truck className="h-4 w-4 text-white" aria-hidden />
+    <div className="flex items-center gap-3">
+      <span className="tile-3d flex h-10 w-10 items-center justify-center rounded-xl">
+        <Truck className="h-5 w-5 text-white" aria-hidden />
       </span>
       <div>
-        <p className="text-sm font-semibold text-white">TruckVision IA</p>
-        <p className="text-[11px] text-slate-400">Maranhão · MVP</p>
+        <p className="text-sm font-semibold tracking-tight text-white">TruckVision IA</p>
+        <p className="text-[11px] tracking-wide text-slate-400">Inteligência Comercial · MA</p>
       </div>
     </div>
   );
 
   const footer = (
-    <div className="mt-auto space-y-2 text-xs text-slate-400">
+    <div className="mt-auto space-y-3 text-xs text-slate-400">
       {mode === "demo" ? (
-        <p className="rounded-lg bg-amber-500/15 p-2 text-amber-200">
+        <p className="rounded-xl border border-amber-400/20 bg-amber-400/10 p-3 text-amber-200">
           Modo demonstração: dados fictícios em memória. Configure o Supabase para usar dados reais.
         </p>
       ) : (
@@ -66,29 +68,35 @@ export function Sidebar({ mode, userEmail }: { mode: "demo" | "supabase"; userEm
           </form>
         )
       )}
+      <p className="border-t border-white/5 pt-3 text-[11px] text-slate-500">Enxergue hoje as oportunidades de amanhã</p>
     </div>
   );
+
+  const surface =
+    "bg-gradient-to-b from-[#071330] via-[#06102a] to-[#040a1c] shadow-[inset_-1px_0_0_rgb(148_180_255/0.08),8px_0_32px_-12px_rgb(0_0_0/0.7)]";
 
   return (
     <>
       {/* mobile */}
-      <header className="sticky top-0 z-30 flex items-center justify-between bg-slate-900 px-4 py-3 lg:hidden">
+      <header className={cn("sticky top-0 z-30 flex items-center justify-between px-4 py-3 lg:hidden", surface)}>
         {brand}
-        <button onClick={() => setOpen(!open)} aria-label="Abrir menu" className="text-white">
+        <button onClick={() => setOpen(!open)} aria-label={open ? "Fechar menu" : "Abrir menu"} className="text-white">
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </header>
       {open && (
-        <div className="fixed inset-0 top-14 z-20 flex flex-col gap-6 bg-slate-900 p-4 lg:hidden">
+        <div className={cn("fixed inset-0 top-16 z-20 flex flex-col gap-6 p-4 lg:hidden", surface)}>
           {nav}
           {footer}
         </div>
       )}
       {/* desktop */}
-      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col gap-8 bg-slate-900 p-5 lg:flex">
-        {brand}
-        {nav}
-        {footer}
+      <aside className={cn("sticky top-0 hidden h-screen w-64 shrink-0 flex-col gap-8 p-5 lg:flex", surface)}>
+        {/* luz de topo atrás da marca */}
+        <div aria-hidden className="pointer-events-none absolute top-0 left-0 h-40 w-full bg-[radial-gradient(60%_80%_at_30%_0%,rgb(0_87_255/0.35),transparent)]" />
+        <div className="relative">{brand}</div>
+        <div className="relative">{nav}</div>
+        <div className="relative mt-auto flex flex-col">{footer}</div>
       </aside>
     </>
   );

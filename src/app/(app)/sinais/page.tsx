@@ -36,7 +36,9 @@ export default async function SignalsPage({
   const chip = (active: boolean) =>
     cn(
       "rounded-full border px-3 py-1 text-xs font-medium",
-      active ? "border-primary bg-primary text-white" : "border-border bg-white text-muted hover:text-foreground",
+      active
+        ? "btn-3d border-transparent text-white"
+        : "border-border bg-white/[0.03] text-slate-300 hover:border-accent/30 hover:text-white",
     );
 
   return (

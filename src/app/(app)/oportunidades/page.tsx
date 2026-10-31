@@ -20,15 +20,21 @@ export default async function OpportunitiesPage() {
           {OPPORTUNITY_STATUSES.map((status) => {
             const items = opportunities.filter((o) => o.status === status);
             return (
-              <section key={status} className="rounded-xl bg-slate-100/70 p-3">
-                <h2 className="mb-3 flex items-center justify-between px-1 text-xs font-semibold tracking-wide text-muted uppercase">
+              <section
+                key={status}
+                className="rounded-2xl border border-border bg-black/20 p-3 shadow-[inset_0_2px_8px_rgb(0_0_0/0.45)]"
+              >
+                <h2 className="mb-3 flex items-center justify-between px-1 text-[11px] font-semibold tracking-[0.1em] text-slate-300 uppercase">
                   {STATUS_LABEL[status]}
-                  <span className="rounded-full bg-white px-2 py-0.5 text-foreground">{items.length}</span>
+                  <span className="tile-3d rounded-full px-2 py-0.5 text-white tabular-nums">{items.length}</span>
                 </h2>
                 <div className="space-y-3">
                   {items.map((o) => (
-                    <article key={o.id} className="rounded-lg border border-border bg-white p-3 shadow-sm">
-                      <Link href={`/empresas/${o.company_id}`} className="text-sm font-medium hover:text-primary">
+                    <article
+                      key={o.id}
+                      className={`card-3d lift rounded-xl p-3 ${o.priority === "alta" ? "card-glow" : ""}`}
+                    >
+                      <Link href={`/empresas/${o.company_id}`} className="text-sm font-medium text-white hover:text-accent">
                         {o.company.company_name}
                       </Link>
                       <p className="mt-0.5 text-xs text-muted">
@@ -44,7 +50,7 @@ export default async function OpportunitiesPage() {
                           name="status"
                           defaultValue={o.status}
                           aria-label="Etapa"
-                          className="h-8 flex-1 rounded-md border border-border bg-white px-2 text-xs"
+                          className="field-3d h-8 flex-1 rounded-md border border-border px-2 text-xs text-foreground [&>option]:bg-card"
                         >
                           {OPPORTUNITY_STATUSES.map((s) => (
                             <option key={s} value={s}>
@@ -52,7 +58,7 @@ export default async function OpportunitiesPage() {
                             </option>
                           ))}
                         </select>
-                        <button className="h-8 rounded-md bg-slate-800 px-2 text-xs font-medium text-white hover:bg-slate-700">
+                        <button className="btn-3d h-8 rounded-md px-2.5 text-xs font-medium text-white">
                           Mover
                         </button>
                       </form>

@@ -2,17 +2,23 @@ import { cn } from "@/lib/utils";
 import type { ComponentProps } from "react";
 
 export function Card({ className, ...props }: ComponentProps<"div">) {
-  return <div className={cn("rounded-xl border border-border bg-card p-5 shadow-sm", className)} {...props} />;
+  return <div className={cn("card-3d rounded-2xl p-5", className)} {...props} />;
 }
 
 export function CardTitle({ className, ...props }: ComponentProps<"h2">) {
-  return <h2 className={cn("text-sm font-semibold text-foreground", className)} {...props} />;
+  return (
+    <h2
+      className={cn("text-xs font-semibold tracking-[0.08em] text-muted uppercase", className)}
+      {...props}
+    />
+  );
 }
 
 const buttonVariants = {
-  primary: "bg-primary text-white hover:bg-primary/90",
-  secondary: "border border-border bg-white text-foreground hover:bg-slate-50",
-  ghost: "text-muted hover:bg-slate-100 hover:text-foreground",
+  primary: "btn-3d text-white",
+  secondary:
+    "border border-border bg-surface-2/70 text-foreground shadow-[inset_0_1px_0_rgb(255_255_255/0.08),0_4px_12px_-6px_rgb(0_0_0/0.6)] hover:bg-surface-2 hover:border-accent/30",
+  ghost: "text-muted hover:bg-white/5 hover:text-foreground",
 } as const;
 
 export function Button({
@@ -23,8 +29,8 @@ export function Button({
   return (
     <button
       className={cn(
-        "inline-flex h-9 items-center justify-center gap-2 rounded-lg px-4 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50",
-        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+        "inline-flex h-9 items-center justify-center gap-2 rounded-lg px-4 text-sm font-medium transition-all disabled:cursor-not-allowed disabled:opacity-50",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
         buttonVariants[variant],
         className,
       )}
@@ -34,7 +40,7 @@ export function Button({
 }
 
 const field =
-  "w-full rounded-lg border border-border bg-white px-3 text-sm text-foreground placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+  "field-3d w-full rounded-lg border border-border px-3 text-sm text-foreground placeholder:text-muted/70 focus:border-accent/60 focus:outline-none focus:ring-2 focus:ring-primary/30 [&>option]:bg-card";
 
 export function Input({ className, ...props }: ComponentProps<"input">) {
   return <input className={cn(field, "h-9", className)} {...props} />;
@@ -55,7 +61,10 @@ export function Label({ className, ...props }: ComponentProps<"label">) {
 export function Badge({ className, ...props }: ComponentProps<"span">) {
   return (
     <span
-      className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap", className)}
+      className={cn(
+        "inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium whitespace-nowrap",
+        className,
+      )}
       {...props}
     />
   );
@@ -63,10 +72,11 @@ export function Badge({ className, ...props }: ComponentProps<"span">) {
 
 export function PageHeader({ title, description, children }: { title: string; description?: string; children?: React.ReactNode }) {
   return (
-    <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">{title}</h1>
-        {description && <p className="mt-1 text-sm text-muted">{description}</p>}
+        <p className="mb-1 text-[11px] font-semibold tracking-[0.18em] text-accent uppercase">TruckVision IA</p>
+        <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">{title}</h1>
+        {description && <p className="mt-1.5 text-sm text-muted">{description}</p>}
       </div>
       {children}
     </div>
@@ -74,5 +84,9 @@ export function PageHeader({ title, description, children }: { title: string; de
 }
 
 export function EmptyState({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted">{children}</div>;
+  return (
+    <div className="rounded-xl border border-dashed border-border bg-white/[0.02] p-8 text-center text-sm text-muted">
+      {children}
+    </div>
+  );
 }

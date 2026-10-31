@@ -33,8 +33,9 @@ export function ChatInterface() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-12rem)] min-h-[480px] flex-col rounded-xl border border-border bg-white">
-      <div className="flex-1 space-y-4 overflow-y-auto p-4 sm:p-6">
+    <div className="card-3d relative flex h-[calc(100vh-14rem)] min-h-[480px] flex-col overflow-hidden rounded-2xl">
+      <div aria-hidden className="pointer-events-none absolute -top-24 left-1/2 h-48 w-[32rem] -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
+      <div className="relative flex-1 space-y-4 overflow-y-auto p-4 sm:p-6">
         {!turns.length && (
           <div className="mx-auto max-w-xl text-center">
             <p className="text-sm text-muted">Pergunte sobre empresas, sinais e oportunidades da base.</p>
@@ -43,7 +44,7 @@ export function ChatInterface() {
                 <button
                   key={s}
                   onClick={() => ask(s)}
-                  className="rounded-lg border border-border px-3 py-2 text-left text-sm hover:border-primary hover:text-primary"
+                  className="lift rounded-xl border border-border bg-white/[0.03] px-3 py-2.5 text-left text-sm text-slate-200 shadow-[inset_0_1px_0_rgb(255_255_255/0.05)] hover:bg-primary/10 hover:text-white"
                 >
                   {s}
                 </button>
@@ -53,11 +54,14 @@ export function ChatInterface() {
         )}
         {turns.map((t, i) =>
           t.role === "user" ? (
-            <div key={i} className="ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-4 py-2 text-sm text-white">
+            <div key={i} className="btn-3d ml-auto max-w-[85%] rounded-2xl rounded-br-sm px-4 py-2 text-sm text-white">
               {t.content}
             </div>
           ) : (
-            <div key={i} className="max-w-[95%] rounded-2xl rounded-bl-sm bg-slate-50 px-4 py-3">
+            <div
+              key={i}
+              className="max-w-[95%] rounded-2xl rounded-bl-sm border border-border bg-surface-2/60 px-4 py-3 shadow-[inset_0_1px_0_rgb(255_255_255/0.06)]"
+            >
               <Markdown text={t.content} />
             </div>
           ),

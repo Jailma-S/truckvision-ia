@@ -14,8 +14,8 @@ import {
 } from "./actions";
 
 function Feedback({ state }: { state: FormState }) {
-  if (state.error) return <p className="text-sm text-danger" role="alert">{state.error}</p>;
-  if (state.ok) return <p className="text-sm text-green-700" role="status">{state.ok}</p>;
+  if (state.error) return <p className="text-sm text-red-400" role="alert">{state.error}</p>;
+  if (state.ok) return <p className="text-sm text-emerald-300" role="status">{state.ok}</p>;
   return null;
 }
 

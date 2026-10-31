@@ -57,7 +57,7 @@ export default async function CompaniesPage({
         {companies.length ? (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[720px] text-sm">
-              <thead className="border-b border-border bg-slate-50 text-left text-xs text-muted">
+              <thead className="border-b border-border bg-white/[0.03] text-left text-[11px] tracking-[0.08em] text-muted uppercase">
                 <tr>
                   <th className="px-4 py-3 font-medium">Empresa</th>
                   <th className="px-4 py-3 font-medium">Município</th>
@@ -69,9 +69,9 @@ export default async function CompaniesPage({
               </thead>
               <tbody className="divide-y divide-border">
                 {companies.map((c) => (
-                  <tr key={c.id} className="hover:bg-slate-50">
+                  <tr key={c.id} className="transition-colors hover:bg-primary/[0.07]">
                     <td className="px-4 py-3">
-                      <Link href={`/empresas/${c.id}`} className="font-medium hover:text-primary">
+                      <Link href={`/empresas/${c.id}`} className="font-medium text-white hover:text-accent">
                         {c.company_name}
                       </Link>
                     </td>
