@@ -43,6 +43,12 @@ function buildSteps(companyId: string | null): Step[] {
       text: "Clique em “Simular novo sinal”: um novo contrato é detectado, o IAC é recalculado na hora e o pipeline cresce. Depois, avance.",
     },
     {
+      path: "/mapa",
+      target: "map",
+      title: "Onde estão as oportunidades",
+      text: "O mapa mostra cada município pulsando conforme o volume de oportunidades. Clique em uma cidade para ver as empresas — é a base para distribuir os territórios entre os vendedores.",
+    },
+    {
       path: "/",
       target: "ranking",
       title: "Onde focar primeiro",

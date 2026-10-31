@@ -1,6 +1,6 @@
 "use client";
 
-import { Building2, KanbanSquare, LayoutDashboard, Menu, MessageSquare, Radar, Truck, X } from "lucide-react";
+import { Building2, KanbanSquare, LayoutDashboard, MapPinned, Menu, MessageSquare, Radar, Truck, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/mapa", label: "Mapa Territorial", icon: MapPinned },
   { href: "/oportunidades", label: "Oportunidades", icon: KanbanSquare },
   { href: "/empresas", label: "Empresas", icon: Building2 },
   { href: "/sinais", label: "Inteligência de Mercado", icon: Radar },

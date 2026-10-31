@@ -233,6 +233,17 @@ body {
   pointer-events: none;
 }
 
+/* Onda que se expande a partir das cidades no mapa */
+@keyframes tv-ripple {
+  0% { transform: scale(1); opacity: 0.85; }
+  100% { transform: scale(3.4); opacity: 0; }
+}
+.map-ripple {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: tv-ripple 2.4s ease-out infinite;
+}
+
 /* Notificação deslizando da direita */
 @keyframes tv-toast {
   from { opacity: 0; transform: translateX(40px) scale(0.96); }
@@ -260,7 +271,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .lift, .lift:hover { transition: none; transform: none; }
   .reveal, .fill-anim, .live-dot, .orb, .orb-slow, .radar-sweep, .radar-blip, .marquee, .shine::after, .toast-in,
-  .tour-spot {
+  .tour-spot, .map-ripple {
     animation: none !important;
   }
   .tilt { transform: none !important; transition: none; }
