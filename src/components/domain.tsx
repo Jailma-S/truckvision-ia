@@ -8,6 +8,7 @@ import {
   type SignalWithRefs,
 } from "@/domain/entities";
 import { cn, formatDate } from "@/lib/utils";
+import { CountUp, Tilt } from "./motion";
 import { Badge, Card } from "./ui";
 
 const PRIORITY_STYLE: Record<Priority, string> = {
@@ -35,7 +36,7 @@ export function NeutralBadge({ className, ...props }: React.ComponentProps<typeo
   return <Badge className={cn("border-border bg-white/5 text-slate-200", className)} {...props} />;
 }
 
-export function IacScore({ score, className }: { score: number; className?: string }) {
+export function IacScore({ score, className, index = 0 }: { score: number; className?: string; index?: number }) {
   const bar =
     score >= 80
       ? "from-emerald-400 to-emerald-300 text-emerald-400"
@@ -45,7 +46,10 @@ export function IacScore({ score, className }: { score: number; className?: stri
   return (
     <div className={cn("flex items-center gap-2", className)} aria-label={`IAC ${score} de 100`}>
       <div className="track-3d h-2 w-20 overflow-hidden rounded-full">
-        <div className={cn("bar-glow h-full rounded-full bg-gradient-to-r", bar)} style={{ width: `${score}%` }} />
+        <div
+          className={cn("bar-glow fill-anim h-full rounded-full bg-gradient-to-r", bar)}
+          style={{ width: `${score}%`, ["--i" as string]: index }}
+        />
       </div>
       <span className="w-8 text-right text-sm font-semibold text-white tabular-nums">{score}</span>
     </div>
@@ -58,34 +62,46 @@ export function KpiCard({
   hint,
   icon: Icon,
   highlight = false,
+  index = 0,
 }: {
   label: string;
   value: string | number;
   hint?: string;
   icon?: LucideIcon;
   highlight?: boolean;
+  index?: number;
 }) {
   return (
-    <Card className={cn("lift relative overflow-hidden p-4", highlight && "card-glow")}>
-      {/* feixe de luz no canto do cartão */}
-      <div
-        aria-hidden
-        className={cn(
-          "pointer-events-none absolute -top-10 -right-10 h-28 w-28 rounded-full blur-2xl",
-          highlight ? "bg-primary/45" : "bg-primary/20",
-        )}
-      />
-      <div className="relative flex items-start justify-between gap-3">
-        <p className="text-xs font-medium text-muted">{label}</p>
-        {Icon && (
-          <span className="tile-3d flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
-            <Icon className="h-4 w-4 text-white" aria-hidden />
-          </span>
-        )}
-      </div>
-      <p className="metric-glow relative mt-2 text-3xl font-semibold tracking-tight text-white tabular-nums">{value}</p>
-      {hint && <p className="relative mt-1 text-xs text-muted">{hint}</p>}
-    </Card>
+    // a entrada fica no invólucro: a animação travaria o transform usado pela inclinação
+    <div className="reveal" style={{ ["--i" as string]: index }}>
+      <Tilt className="h-full">
+        <Card
+          className={cn("relative h-full overflow-hidden p-4", highlight && "card-glow shine")}
+          style={{ ["--shine-delay" as string]: `${1.5 + index * 0.6}s` }}
+        >
+          {/* feixe de luz no canto do cartão */}
+          <div
+            aria-hidden
+            className={cn(
+              "pointer-events-none absolute -top-10 -right-10 h-28 w-28 rounded-full blur-2xl",
+              highlight ? "bg-primary/45" : "bg-primary/20",
+            )}
+          />
+          <div className="relative flex items-start justify-between gap-3">
+            <p className="text-xs font-medium text-muted">{label}</p>
+            {Icon && (
+              <span className="tile-3d flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
+                <Icon className="h-4 w-4 text-white" aria-hidden />
+              </span>
+            )}
+          </div>
+          <p className="metric-glow relative mt-2 text-3xl font-semibold tracking-tight text-white tabular-nums">
+            <CountUp value={value} />
+          </p>
+          {hint && <p className="relative mt-1 text-xs text-muted">{hint}</p>}
+        </Card>
+      </Tilt>
+    </div>
   );
 }
 

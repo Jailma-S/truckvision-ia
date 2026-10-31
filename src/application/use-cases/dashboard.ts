@@ -28,6 +28,7 @@ export async function getDashboardUseCase(repo: TruckVisionRepository) {
       qualificationRate: opportunities.length ? Math.round((qualified / opportunities.length) * 100) : 0,
       highPriority: active.filter((o) => o.priority === "alta").length,
     },
+    active,
     ranking: active.slice(0, 8),
     recentSignals: signals.slice(0, 6),
     funnel,

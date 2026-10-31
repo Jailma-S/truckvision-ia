@@ -68,8 +68,12 @@ export default async function CompaniesPage({
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {companies.map((c) => (
-                  <tr key={c.id} className="transition-colors hover:bg-primary/[0.07]">
+                {companies.map((c, i) => (
+                  <tr
+                    key={c.id}
+                    className="reveal transition-colors hover:bg-primary/[0.07]"
+                    style={{ ["--i" as string]: i + 2 }}
+                  >
                     <td className="px-4 py-3">
                       <Link href={`/empresas/${c.id}`} className="font-medium text-white hover:text-accent">
                         {c.company_name}
@@ -81,7 +85,7 @@ export default async function CompaniesPage({
                       <PriorityBadge priority={c.opportunity?.priority} />
                     </td>
                     <td className="px-4 py-3 text-muted">{c.opportunity ? STATUS_LABEL[c.opportunity.status] : "—"}</td>
-                    <td className="px-4 py-3">{c.opportunity ? <IacScore score={c.opportunity.iac_score} /> : "—"}</td>
+                    <td className="px-4 py-3">{c.opportunity ? <IacScore score={c.opportunity.iac_score} index={i + 2} /> : "—"}</td>
                   </tr>
                 ))}
               </tbody>

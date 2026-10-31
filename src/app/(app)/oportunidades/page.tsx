@@ -17,7 +17,7 @@ export default async function OpportunitiesPage() {
       />
       <div className="-mx-4 overflow-x-auto px-4 pb-4">
         <div className="grid min-w-[1100px] grid-cols-5 gap-4">
-          {OPPORTUNITY_STATUSES.map((status) => {
+          {OPPORTUNITY_STATUSES.map((status, col) => {
             const items = opportunities.filter((o) => o.status === status);
             return (
               <section
@@ -29,10 +29,11 @@ export default async function OpportunitiesPage() {
                   <span className="tile-3d rounded-full px-2 py-0.5 text-white tabular-nums">{items.length}</span>
                 </h2>
                 <div className="space-y-3">
-                  {items.map((o) => (
+                  {items.map((o, i) => (
                     <article
                       key={o.id}
-                      className={`card-3d lift rounded-xl p-3 ${o.priority === "alta" ? "card-glow" : ""}`}
+                      className={`card-3d reveal lift rounded-xl p-3 ${o.priority === "alta" ? "card-glow" : ""}`}
+                      style={{ ["--i" as string]: col * 2 + i }}
                     >
                       <Link href={`/empresas/${o.company_id}`} className="text-sm font-medium text-white hover:text-accent">
                         {o.company.company_name}
@@ -42,7 +43,7 @@ export default async function OpportunitiesPage() {
                       </p>
                       <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
                         <PriorityBadge priority={o.priority} />
-                        <IacScore score={o.iac_score} />
+                        <IacScore score={o.iac_score} index={col * 2 + i} />
                       </div>
                       <form action={moveOpportunityAction} className="mt-3 flex gap-1">
                         <input type="hidden" name="id" value={o.id} />

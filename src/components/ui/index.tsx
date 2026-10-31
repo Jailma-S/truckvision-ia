@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import type { ComponentProps } from "react";
 
 export function Card({ className, ...props }: ComponentProps<"div">) {
-  return <div className={cn("card-3d rounded-2xl p-5", className)} {...props} />;
+  return <div className={cn("card-3d reveal rounded-2xl p-5", className)} {...props} />;
 }
 
 export function CardTitle({ className, ...props }: ComponentProps<"h2">) {
