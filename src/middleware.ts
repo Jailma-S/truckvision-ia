@@ -1,11 +1,11 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-/** Renova a sessão do Supabase e exige login. Sem Supabase configurado, roda em modo demo aberto. */
+/** Com AUTH_REQUIRED=true, renova a sessão do Supabase e exige login. Caso contrário, o link é aberto. */
 export async function middleware(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) return NextResponse.next();
+  if (!url || !key || process.env.AUTH_REQUIRED !== "true") return NextResponse.next();
 
   let response = NextResponse.next({ request });
   const supabase = createServerClient(url, key, {

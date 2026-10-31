@@ -1,11 +1,15 @@
 import { Sidebar } from "@/components/sidebar";
-import { createSupabaseServerClient, isSupabaseConfigured } from "@/infrastructure/supabase/clients";
+import {
+  createSupabaseServerClient,
+  isAuthRequired,
+  isSupabaseConfigured,
+} from "@/infrastructure/supabase/clients";
 
 export const dynamic = "force-dynamic";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   let userEmail: string | null = null;
-  if (isSupabaseConfigured()) {
+  if (isSupabaseConfigured() && isAuthRequired()) {
     const supabase = await createSupabaseServerClient();
     userEmail = (await supabase.auth.getUser()).data.user?.email ?? null;
   }

@@ -22,7 +22,8 @@ Sem chave de IA, resumos/briefings são montados por regra e o chat mostra só o
 3. Authentication → URL Configuration → adicione `http://localhost:3000/auth/callback` e a URL da Vercel.
 4. Preencha `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` e `SUPABASE_SERVICE_ROLE_KEY` no `.env.local`.
 
-Com Supabase configurado, o login é por link mágico no e-mail e todas as telas exigem usuário autenticado (RLS: `authenticated`).
+Acesso: por padrão o link é **aberto, sem login** (como o PCP 360°) e o servidor usa a service role. Qualquer pessoa com o link lê e edita os dados.
+Antes de carregar dados reais, defina `AUTH_REQUIRED=true`: o login passa a ser por link mágico no e-mail e as telas exigem usuário autenticado (RLS: `authenticated`).
 
 ## IA
 
