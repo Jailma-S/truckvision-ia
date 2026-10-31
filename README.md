@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TruckVision IA
 
-## Getting Started
+> Enxergue hoje as oportunidades de amanhã
 
-First, run the development server:
+Plataforma de inteligência comercial que transforma sinais públicos de mercado em oportunidades priorizadas (IAC) para venda de caminhões novos. Escopo inicial: Maranhão.
+
+## Rodar localmente
 
 ```bash
+npm install
+cp .env.example .env.local   # opcional
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Sem variáveis do Supabase o app roda em **modo demonstração**: 10 empresas e 14 sinais **fictícios** em memória (reiniciar o servidor apaga o que foi cadastrado).
+Sem chave de IA, resumos/briefings são montados por regra e o chat mostra só o ranking.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Ligar o Supabase
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Crie o projeto em supabase.com.
+2. SQL Editor → rode `supabase/migrations/0001_init.sql` e depois `supabase/seed.sql`.
+3. Authentication → URL Configuration → adicione `http://localhost:3000/auth/callback` e a URL da Vercel.
+4. Preencha `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` e `SUPABASE_SERVICE_ROLE_KEY` no `.env.local`.
 
-## Learn More
+Com Supabase configurado, o login é por link mágico no e-mail e todas as telas exigem usuário autenticado (RLS: `authenticated`).
 
-To learn more about Next.js, take a look at the following resources:
+## IA
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`AI_PROVIDER` = `anthropic` (padrão) | `openai` | `azure` | `gemini`. `AI_MODEL` sobrescreve o modelo.
+Padrão Anthropic: `claude-opus-5-5`, com fallback automático do servidor em caso de recusa. Para custo menor, `AI_MODEL=claude-sonnet-5-5`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Módulo PRD | Onde |
+|---|---|
+| IA 01 Resumo + IA 07 Relevância | `src/application/use-cases/register-signal.ts` |
+| IA 02/03/05 Justificativa, IAC, abordagem | `generate-analysis.ts` (kind `justification`) |
+| IA 04 Chat | `chat.ts` |
+| IA 06 Briefing | `generate-analysis.ts` (kind `briefing`) |
+| IA 08 Agente de monitoramento | `monitor-sources.ts` + `/api/agent/monitor` (Vercel Cron, diário) |
 
-## Deploy on Vercel
+O agente lê o `feed_url` (RSS/Atom) das fontes ativas na tabela `sources`. Cadastre os feeds após validar cada endereço.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## IAC
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Regra em `src/domain/rules/iac.ts`: contrato 25 · expansão 30 · investimento 20 · fonte confiável 15 · recência 10.
+Faixas: 80–100 alta · 50–79 média · 0–49 exploratório. Sinais de relevância baixa ou com mais de 180 dias não pontuam.
+
+## Arquitetura
+
+```
+src/app            telas (App Router) e rotas
+src/features       server actions e componentes de formulário/chat
+src/components     UI reutilizável
+src/application    casos de uso e prompts
+src/domain         entidades, regra do IAC, interface de repositório
+src/infrastructure supabase, demo (memória), ai (provedores), crawlers (RSS)
+```
+
+## Deploy (Vercel)
+
+GitHub → importar na Vercel → configurar as variáveis do `.env.example` (incluindo `CRON_SECRET`).
+`main` → produção, `develop` → preview.
