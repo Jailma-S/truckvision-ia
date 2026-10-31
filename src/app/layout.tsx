@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+// Fontes hospedadas no próprio app (sem chamada ao Google Fonts no build ou no navegador)
+import "@fontsource-variable/inter";
+import "@fontsource-variable/manrope";
 import "./globals.css";
 
 export const metadata: Metadata = {

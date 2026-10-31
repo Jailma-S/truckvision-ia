@@ -75,7 +75,7 @@ export function PageHeader({ title, description, children }: { title: string; de
     <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
         <p className="mb-1 text-[11px] font-semibold tracking-[0.18em] text-accent uppercase">TruckVision IA</p>
-        <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">{title}</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">{title}</h1>
         {description && <p className="mt-1.5 text-sm text-muted">{description}</p>}
       </div>
       {children}

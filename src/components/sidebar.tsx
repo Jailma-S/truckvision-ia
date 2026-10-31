@@ -48,7 +48,7 @@ export function Sidebar({ mode, userEmail }: { mode: "demo" | "supabase"; userEm
         <Truck className="h-5 w-5 text-white" aria-hidden />
       </span>
       <div>
-        <p className="text-sm font-semibold tracking-tight text-white">TruckVision IA</p>
+        <p className="font-display text-[15px] font-bold tracking-tight text-white">TruckVision IA</p>
         <p className="text-[11px] tracking-wide text-slate-400">Inteligência Comercial · MA</p>
       </div>
     </div>

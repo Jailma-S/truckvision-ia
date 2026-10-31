@@ -36,12 +36,19 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
-  --font-sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  /* Inter: texto e tabelas. Manrope: títulos e números de destaque. */
+  --font-sans: "Inter Variable", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --font-display: "Manrope Variable", "Inter Variable", "Segoe UI", system-ui, sans-serif;
 }
 
 body {
   color: var(--foreground);
   font-family: var(--font-sans);
+  /* cv11: "a" de um andar; ss01: dígitos abertos; tnum: números alinhados em colunas */
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   background-color: var(--background);
   /* iluminação estratégica: foco azul no topo, reflexo ciano à direita */
   background-image:
@@ -50,6 +57,18 @@ body {
     radial-gradient(1200px 600px at 50% 120%, rgb(0 87 255 / 0.10), transparent 60%);
   background-attachment: fixed;
   min-height: 100vh;
+}
+
+/* em @layer base para que classes como tracking-* continuem valendo */
+@layer base {
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+.tabular-nums {
+  font-feature-settings: "cv11", "ss01", "tnum";
 }
 
 ::selection {
@@ -128,6 +147,8 @@ body {
 
   /* Número de destaque com leve luz */
   .metric-glow {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
     text-shadow: 0 0 24px rgb(110 168 255 / 0.35);
   }
 }
